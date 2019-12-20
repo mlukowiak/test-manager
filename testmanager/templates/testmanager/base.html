@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    {% load static %}
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>Test Manager</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'testmanager/css/materialize.css' %}" rel="stylesheet">
+    <link href="{% static 'testmanager/css/style.css' %}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+</head>
+
+<body>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" data-target="left-sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <a href="{% url 'home' %}"><img src="/media/logo.png" alt="logo" class="logo-img">
+                    <p class="logo">Test Manager  <font size="1">ALFA</font> </p>
+                </a>
+                <ul class="right">
+                    {% if user.is_authenticated %}
+                    <li><a class="modal-trigger" href="#modal1"><i class="material-icons tooltipped"
+                                data-position="bottom" data-tooltip="Dodaj nowy scenariusz">add</i></a></li>
+                    <div id="modal1" class="modal" method="post">
+                        <form method="POST" action="{% url 'scenario-create' %}">
+                            <div class="modal-content">
+                                <div class="center">
+                                    <h5>Dodaj nowy scenariusz testów:</h5>
+                                </div>
+                                {% csrf_token %}
+                                {{ newScenario.as_p }}
+                                <div class="center">
+                                    <button class="btn waves-effect waves-light" type="submit"
+                                        value="Submit">Dodaj</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <ul id="dropdown1" class="dropdown-content">
+                        <li><a href="{% url 'profile' %}"><i class="material-icons">perm_identity</i>Profil</a></li>
+                        <li><a href="{% url 'myscenarios' %}"><i class="material-icons">event_available</i>Moje
+                                scenariusze</a></li>
+                        <li><a href="{% url 'logout' %}"><i class="material-icons">exit_to_app</i>Wyloguj</a></li>
+                    </ul>
+                    <li>
+                        <a class="dropdown-trigger" data-target="dropdown1">
+                            {% if user.profile.image.url %}
+                            <img src="{{ user.profile.image.url }}" alt="{{ user.username }} avatar"
+                                class="circle responsive-img-nav">
+                            {% else %}
+                            <img src="/media/default.jpg" alt="{{ user.username }} avatar"
+                                class="circle responsive-img-nav">
+                            {% endif %}
+                            {% if user.first_name and user.last_name %}
+                            {{ user.first_name}} {{user.last_name }}
+                            {% else %}
+                            {{ user.username }}
+                            {% endif %}
+                            <i class="material-icons right">arrow_drop_down</i></a>
+                    </li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Zaloguj się</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags}}">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if request.path == '/login/' %}
+    {% block login %}
+    {% endblock %}
+    {% elif request.path == '/logout/' %}
+    {% block logout %}
+    {% endblock %}
+    {% elif request.path == '/register/' %}
+    {% block register %}
+    {% endblock %}
+    {% else %}
+    <div class="row">
+        <div class="col s12 m1 l3">
+            <div class="container">
+                <ul id="left-sidenav" class="sidenav sidenav-fixed">
+                    <li><a href="{% url 'home' %}"><i class="material-icons">dashboard</i>Pulpit</a></li>
+                    <li><a href="{% url 'scenarios' %}"><i class="material-icons">assignment</i>Scenariusze</a></li>
+                    <li><a href="#!"><i class="material-icons">subtitles</i>Generator danych</a></li>
+                    <li><a href="#!"><i class="material-icons">event_available</i>Do zrobienia</a></li>
+                    <li><a href="#!"><i class="material-icons">date_range</i>Kalendarz</a></li>
+                    <li><a href="#!"><i class="material-icons">settings</i>Ustawienia</a></li>
+                    <li><a class="waves-effect" id="sidenav-toggle"><i class="material-icons">chevron_left</i>zwiń</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col s12 m11 l9">
+            {% endif %}
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="{% static 'testmanager/js/materialize.js' %}"></script>
+    <script src="{% static 'testmanager/js/init.js' %}"></script>
+</body>
+
+</html>

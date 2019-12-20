@@ -1,0 +1,29 @@
+{% extends "testmanager/base.html" %}
+{% block content %}
+<div class="container-detail">
+
+        <h5>Moje scenariusze testów:</h5>
+        <table class="highlight">
+            <thead>
+              <tr>
+                  <th width="8%">Projekt</th>
+                  <th width="30%">Nazwa</th>
+                  <th width="60%">Opis</th>
+                  <th width="2%">Info</th>
+              </tr>
+            </thead>
+        {% for scenario in myscenarios %}
+            <tbody>
+              <tr>
+                <td>{{ scenario.scenarioArea }}</td>
+                <td><a
+                    href="{% url 'scenario-detail' scenario.id %}"><b>{{ scenario.scenarioTitle }}</b></a></td>
+                <td>{{ scenario.scenarioDescription}}</td>
+                <td><i class="material-icons tooltipped" data-position="bottom" data-tooltip="Data dodania: {{ scenario.scenarioDate }}<br>Typ: {{ scenario.scenarioType }}">info</i></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
+
+{% endblock content %}

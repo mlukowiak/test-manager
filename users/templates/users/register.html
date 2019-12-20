@@ -1,0 +1,25 @@
+{% extends "testmanager/base.html" %}
+{% block register %}
+{% if user.is_anonymous %}    
+<br><br>
+<div class="row">
+    <div class="valign-wrapper row login-box">
+        <div class="col card s10 pull-s1 m6 pull-m3 l4 pull-l4">
+            <div class="card-content">
+                <form method="POST">
+                    <span class="card-title center">Zarejestruj się</span>
+                    {% csrf_token %}
+                    {{ r_form.as_p }}
+                    <br><br>
+                    <div class="center">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Zaloguj się</button>
+                    </div>
+                    <br>
+                    <p class="center">Masz już konto? <a href="{% url 'login' %}">Zaloguj się.</a></p>
+                </form> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock register %}

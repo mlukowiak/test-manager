@@ -1,0 +1,102 @@
+{% extends "testmanager/base.html" %}
+{% block content %}
+
+<div class="container-detail">
+    <div class="col s6">
+        <p align="left">
+            {% if object.scenarioAuthor.profile.image.url %}
+            <img src="{{ object.scenarioAuthor.profile.image.url }}" class="circle responsive-img-nav">
+            {% else %}
+            <img src="/media/default.jpg" class="circle responsive-img-nav">
+            {% endif %}
+            {{ object.scenarioAuthor }}, {{ object.scenarioDate }}</p>
+    </div>
+    <div class="col s6">
+        <p align="right">{{ object.scenarioArea }}</p>
+    </div>
+    <div class="col s12">
+        <h5>
+            Scenariusz testowy
+            {% if object.scenarioAuthor == user %}
+            <a href="{% url 'scenario-delete' object.id %}"><i class="material-icons tooltipped" data-position="bottom"
+                    data-tooltip="Usuń scenariusz">delete</i></a>
+            <a href="#"><i class="material-icons tooltipped" data-position="bottom"
+                    data-tooltip="Edytuj scenariusz">edit</i></a>
+            <a href="#"><i class="material-icons tooltipped" data-position="bottom"
+                    data-tooltip="Wykonaj">autorenew</i></a>
+            {% endif %}
+        </h5>
+        <hr>
+        <p><b>Nazwa:</b> {{ object.scenarioTitle }}</p>
+        <p><b>Typ:</b> {{ object.scenarioType }}</p>
+        <p><b>Opis:</b> {{ object.scenarioDescription }}</p>
+        <p><b>Czynności przygotowawcze:</b>
+            {% if object.scenarioInitial %}
+            {{ object.scenarioInitial }}
+            {% else %}
+            Brak
+            {% endif %}
+        </p>
+        <p><b>Czynności końcowe:</b>
+            {% if object.scenarioFinal %}
+            {{ object.scenarioFinal }}
+            {% else %}
+            Brak
+            {% endif %}
+        </p>
+        <h5>Przypadki testowe <a class="modal-trigger" href="#modal2"><i class="material-icons tooltipped"
+                    data-position="bottom" data-tooltip="Dodaj przypadek testowy">add</i></a></h5>
+        <hr>
+        <table class="highlight responsive-table">
+            <thead>
+                <tr>
+                    <th width="20%">Nazwa</th>
+                    <th width="20%">Warunki wstępne</th>
+                    <th width="30%">Kroki</th>
+                    <th width="20%">Oczekiwany rezultat</th>
+                    <th width="8%">Status</th>
+                    <th width="2%">Info</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for case in object.testcase_set.all %}
+                <tr>
+                    <td>{{ case.testName }}</td>
+                    <td>{{ case.testCondition }}</td>
+                    <td>{{ case.testSteps|linebreaks }}</td>
+                    <td>{{ case.testExpectedResult }}</td>
+                    <td>{{ case.testStatus }}</td>
+                    <td><i class="material-icons tooltipped" data-position="bottom"
+                            data-tooltip="Autor: {{ case.testAuthor.first_name }} {{ case.testAuthor.last_name }}<br>Data dodania: {{ case.testDate }}">info</i>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h5>Komentarze</h5>
+        <hr>
+
+        <form method="POST" action="{% url 'comment-create' scenario.pk %}"
+            onsubmit="setTimeout(function(){window.location.reload();},10)">
+            {% csrf_token %}
+            {{ newComment }}
+            <div class="center">
+                <button class="btn waves-effect waves-light" type="submit" value="Submit">Opublikuj</button>
+            </div>
+        </form>
+
+
+
+        {% for comment in object.comment_set.all %}
+        <p></p><small>{{ comment.commentAuthor.first_name }} {{ comment.commentAuthor.last_name }},
+            {{ comment.commentDate }}</small><br>
+        {{ comment.commentText }}</p>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+
+{% endblock content %}

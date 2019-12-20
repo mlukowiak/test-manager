@@ -1,0 +1,26 @@
+{% extends "testmanager/base.html" %}
+{% block content %}
+
+<div class="col s12 m5">
+    {% if latest_scenario_list %}
+    <ul class="collection with-header">
+        <li class="collection-header">
+            <h5>Ostatnio dodane scenariusze:</h5>
+        </li>
+        {% for scenario in latest_scenario_list %}
+        <li class="collection-item"><a
+                href="{% url 'scenario-detail' scenario.id %}">{{ scenario.scenarioTitle }}</a><br>
+            <small>
+                {% if scenario.scenarioAuthor.first_name and scenario.scenarioAuthor.last_name %}
+                {{ scenario.scenarioAuthor.first_name}} {{scenario.scenarioAuthor.last_name }},
+                {% else %}
+                {{ scenario.scenarioAuthor }}.
+                {% endif %}
+                {{ scenario.scenarioDate }}</small></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Brak scenariuszy w bazie!</p>
+    {% endif %}
+</div>
+{% endblock content %}

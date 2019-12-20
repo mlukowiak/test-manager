@@ -1,0 +1,25 @@
+{% extends "testmanager/base.html" %}
+{% block content %}
+
+<div class="container-detail">
+  <div class="col s6">
+    <div class="row valign-wrapper">
+      <div class="col s2">
+        {% if user.profile.image.url %}
+        <img src="{{ user.profile.image.url }}" alt="{{ user.username }} avatar" class="circle responsive-img">
+        {% else %}
+        <img src="/media/default.jpg" alt="{{ user.username }} avatar" class="circle responsive-img">
+        {% endif %}
+      </div>
+      <div class="col s10">
+        <span class="black-text">
+          <h5><b>{{ user.first_name }} {{ user.last_name }}</b> ({{ user.username }})</h5>
+          {{ user.profile.title }}<br>
+          {{ user.email }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

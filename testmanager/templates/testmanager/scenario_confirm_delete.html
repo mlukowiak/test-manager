@@ -1,0 +1,8 @@
+{% extends "testmanager/base.html" %}
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Usuwając scenariusz usuniesz również wszystkie podpięte do niego przypadki testowe oraz komentarze!</p>
+    <p>Jesteś pewien, ze chcesz usunąć scenariusz "{{ object }}"?</p>
+    <input type="submit" value="Tak, usuń">
+</form>
+{% endblock content %}

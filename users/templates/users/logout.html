@@ -1,0 +1,14 @@
+{% extends "testmanager/base.html" %}
+{% block logout %}
+<br><br>
+<div class="row">
+    <div class="valign-wrapper row login-box">
+        <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
+            <div class="card-content">
+                <span class="card-title center">Zostałeś wylogowany</span>
+                <center><a href="{% url 'login' %}"> Zaloguj sie ponownie</a></center>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock logout %}
